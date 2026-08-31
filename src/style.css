@@ -1,0 +1,1694 @@
+/* ===========================================================================
+   AFLOAT — hoja de estilos unica, escrita a mano, sin preprocesadores.
+   Estetica: pixel art, paleta de consola de 8 bits, bordes duros, cero curvas.
+   =========================================================================== */
+
+:root {
+  /* Paleta */
+  --negro:      #070b12;
+  --noche:      #0b1220;
+  --panel:      #12203a;
+  --panel-alto: #1b2f52;
+  --linea:      #2c4a7c;
+
+  --cielo-alto: #2b5f9e;
+  --cielo-bajo: #5fa8d3;
+  --mar:        #123a6b;
+  --mar-claro:  #1d5a9e;
+  --espuma:     #7fd4ef;
+
+  --casco:      #a33a2c;
+  --casco-som:  #6b1f16;
+  --cubierta:   #c98d4b;
+  --cubierta-s: #8a5a26;
+  --caja:       #e0a94f;
+  --caja-som:   #8a5f1e;
+  --metal:      #9fb3c8;
+  --metal-som:  #56708c;
+
+  --crema:      #f4ecd8;
+  --ambar:      #ffd166;
+  --verde:      #5cd67a;
+  --rojo:       #ef4b4b;
+  --rojo-osc:   #8f1f1f;
+  --apagado:    #6c7f9c;
+
+  /* Medidas del "pixel" */
+  --px: 3px;
+  --borde: var(--px) solid var(--negro);
+  --sombra: calc(var(--px) * 2) calc(var(--px) * 2) 0 var(--negro);
+
+  --fuente: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "DejaVu Sans Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* El atributo hidden manda sobre cualquier display de esta hoja.
+   Sin esto, una regla como .cortina { display: grid } deja el elemento
+   visible aunque el JavaScript le ponga hidden = true. */
+[hidden] {
+  display: none !important;
+}
+
+html {
+  /* Sin background propio: asi el degradado del body se propaga al lienzo y
+     cubre toda la ventana aunque el contenido sea corto. */
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  padding: calc(var(--px) * 4);
+  background:
+    /* lineas de barrido, baratas: un solo gradiente repetido */
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.22) 0 2px,
+      rgba(0, 0, 0, 0) 2px 4px
+    ),
+    radial-gradient(120% 80% at 50% 0%, #16305c 0%, var(--noche) 55%, var(--negro) 100%);
+  background-attachment: fixed;
+  color: var(--crema);
+  font-family: var(--fuente);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+img,
+canvas {
+  image-rendering: pixelated;
+}
+
+#gabinete {
+  margin: 0 auto;
+}
+
+/* =========================================================== tipografia */
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.modulo-titulo {
+  font-size: 0.68rem;
+  color: var(--ambar);
+  padding: calc(var(--px) * 2) calc(var(--px) * 3);
+  background: var(--negro);
+  border-bottom: var(--borde);
+}
+
+/* ================================================== pantalla de titulo */
+
+.pantalla {
+  max-width: 46rem;
+  margin: 0 auto;
+  min-height: calc(100dvh - var(--px) * 8); /* menos el padding del body */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--px) * 6) calc(var(--px) * 3);
+}
+
+.titulo-marco {
+  display: inline-block;
+  align-self: center; /* si no, como hijo flex se estiraria a todo el ancho */
+  padding: calc(var(--px) * 4) calc(var(--px) * 8);
+  margin-bottom: calc(var(--px) * 6);
+  background: var(--panel);
+  border: calc(var(--px) * 2) solid var(--crema);
+  box-shadow:
+    0 0 0 var(--px) var(--negro),
+    calc(var(--px) * 3) calc(var(--px) * 3) 0 var(--negro);
+  animation: flotar 3.2s steps(4, end) infinite alternate;
+}
+
+@keyframes flotar {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(var(--px) * -2));
+  }
+}
+
+.logo {
+  font-size: clamp(2.4rem, 13vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: 0.16em;
+  color: var(--ambar);
+  /* Contorno duro tipo sprite: sombras de 1px en las ocho direcciones. */
+  text-shadow:
+    -3px 0 var(--negro), 3px 0 var(--negro), 0 -3px var(--negro), 0 3px var(--negro),
+    -3px -3px var(--negro), 3px -3px var(--negro), -3px 3px var(--negro), 3px 3px var(--negro),
+    0 9px 0 var(--casco);
+}
+
+.logo-sub {
+  margin: calc(var(--px) * 4) 0 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.42em;
+  color: var(--espuma);
+  text-transform: uppercase;
+}
+
+.titulo-texto {
+  max-width: 34rem;
+  margin: 0 auto calc(var(--px) * 6);
+  color: var(--crema);
+  font-size: 0.86rem;
+}
+
+.titulo-aviso {
+  max-width: 34rem;
+  margin: 0 auto calc(var(--px) * 6);
+  padding: calc(var(--px) * 2) calc(var(--px) * 3);
+  border: 2px solid var(--rojo-osc);
+  background: rgba(143, 31, 31, 0.18);
+  color: #ffc9c9;
+  font-size: 0.78rem;
+}
+
+.instruccion {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  color: var(--ambar);
+  margin: 0 0 calc(var(--px) * 4);
+}
+
+.parpadea {
+  animation: parpadeo 1.1s steps(1, end) infinite;
+}
+
+@keyframes parpadeo {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0.15;
+  }
+}
+
+.botones-lado {
+  display: flex;
+  gap: calc(var(--px) * 4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: calc(var(--px) * 6);
+}
+
+.titulo-nota {
+  max-width: 32rem;
+  margin: 0 auto;
+  font-size: 0.72rem;
+  color: var(--apagado);
+}
+
+/* ================================================================ botones */
+
+.btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--px));
+  padding: calc(var(--px) * 3) calc(var(--px) * 5);
+  background: var(--panel-alto);
+  color: var(--crema);
+  border: var(--px) solid var(--crema);
+  border-radius: 0;
+  box-shadow: var(--sombra);
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 80ms steps(2, end), background-color 80ms steps(2, end);
+}
+
+.btn:hover:not(:disabled),
+.btn:focus-visible:not(:disabled) {
+  background: var(--ambar);
+  color: var(--negro);
+  border-color: var(--negro);
+  outline: none;
+  transform: translate(calc(var(--px) * -1), calc(var(--px) * -1));
+  box-shadow: calc(var(--px) * 3) calc(var(--px) * 3) 0 var(--negro);
+}
+
+.btn:active:not(:disabled) {
+  transform: translate(var(--px), var(--px));
+  box-shadow: 0 0 0 var(--negro);
+}
+
+.btn-lado {
+  min-width: 9rem;
+}
+
+.btn-flecha {
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--espuma);
+}
+
+.btn:hover .btn-flecha {
+  color: var(--negro);
+}
+
+.btn-texto {
+  font-size: 0.9rem;
+}
+
+/* ==================================================================== HUD */
+
+.hud {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--px);
+  margin-bottom: calc(var(--px) * 3);
+  padding: calc(var(--px) * 3);
+  background: var(--negro);
+  border: var(--px) solid var(--linea);
+  box-shadow: var(--sombra);
+}
+
+.hud-celda {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--px));
+  padding: 0 calc(var(--px) * 2);
+  min-width: 0;
+}
+
+.hud-celda + .hud-celda {
+  border-left: var(--px) solid var(--panel);
+}
+
+.hud-titulo {
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  color: var(--apagado);
+  text-transform: uppercase;
+}
+
+.hud-cifra {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--crema);
+}
+
+/* Pips de turno */
+.pips,
+.barra,
+.ranuras {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  min-height: 10px;
+  align-items: center;
+}
+
+.pip-turno {
+  width: 7px;
+  height: 10px;
+  background: var(--panel);
+  border: 1px solid var(--negro);
+}
+
+.pip-turno.gastado {
+  background: var(--espuma);
+}
+
+.pip-turno.actual {
+  background: var(--ambar);
+  animation: parpadeo 1s steps(1, end) infinite;
+}
+
+/* Barra de combustible: un segmento por unidad del tanque */
+.celda-combustible {
+  flex: 1 1 3px;
+  min-width: 3px;
+  height: 12px;
+  background: var(--panel);
+  border-top: 1px solid var(--negro);
+  border-bottom: 1px solid var(--negro);
+}
+
+.celda-combustible.llena {
+  background: var(--verde);
+}
+
+.barra.critica .celda-combustible.llena {
+  background: var(--rojo);
+  animation: parpadeo 0.7s steps(1, end) infinite;
+}
+
+/* Ranuras de carga entregada */
+.ranura {
+  width: 11px;
+  height: 11px;
+  background: var(--panel);
+  border: 1px solid var(--negro);
+}
+
+.ranura.llena {
+  background: var(--caja);
+  box-shadow: inset 0 0 0 1px var(--caja-som);
+}
+
+/* La carga que queda en juego y el margen que va quedando */
+.hud-margen {
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  color: var(--espuma);
+}
+
+.hud-margen.sin-margen {
+  color: var(--rojo);
+  font-weight: 700;
+  animation: parpadeo 0.9s steps(1, end) infinite;
+}
+
+/* ================================================================= ESCENA */
+
+.escena {
+  position: relative;
+  height: 15rem;
+  overflow: hidden;
+  background: linear-gradient(to bottom, var(--cielo-alto) 0%, var(--cielo-bajo) 62%);
+  border: var(--px) solid var(--negro);
+  box-shadow: var(--sombra);
+  margin-bottom: calc(var(--px) * 3);
+}
+
+.sol {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  width: 30px;
+  height: 30px;
+  background: var(--ambar);
+  box-shadow:
+    0 0 0 6px rgba(255, 209, 102, 0.28),
+    0 0 0 12px rgba(255, 209, 102, 0.12);
+}
+
+.nube {
+  position: absolute;
+  height: 9px;
+  background: rgba(244, 236, 216, 0.85);
+  box-shadow:
+    12px -9px 0 rgba(244, 236, 216, 0.85),
+    30px -9px 0 rgba(244, 236, 216, 0.85);
+}
+
+.nube-a {
+  top: 30px;
+  left: 12%;
+  width: 54px;
+}
+
+.nube-b {
+  top: 62px;
+  left: 58%;
+  width: 38px;
+  opacity: 0.7;
+}
+
+/* El mar tapa la parte de abajo de la escena */
+.mar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4.2rem;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      var(--mar-claro) 0 3px,
+      var(--mar) 3px 9px
+    );
+  border-top: var(--px) solid var(--espuma);
+}
+
+/* ------------------------------------------------------------- el barco */
+
+/* --marcas lo escribe main.js: entero con signo, negativo hacia la izquierda.
+   La escena entera se inclina desde la linea de flotacion. */
+.barco {
+  position: absolute;
+  left: 50%;
+  bottom: 3.4rem;
+  width: 15rem;
+  margin-left: -7.5rem;
+  transform-origin: 50% 100%;
+  transform: rotate(calc(var(--marcas, 0) * 5deg));
+  transition: transform 260ms steps(6, end);
+}
+
+.cubierta {
+  position: relative;
+  height: 12px;
+  background: var(--cubierta);
+  border: var(--px) solid var(--negro);
+  border-bottom: none;
+  box-shadow: inset 0 -4px 0 var(--cubierta-s);
+}
+
+.casco {
+  position: relative;
+  height: 42px;
+  background: var(--casco);
+  border: var(--px) solid var(--negro);
+  box-shadow: inset 0 -10px 0 var(--casco-som);
+  /* Proa y popa en angulo, dibujadas con esquinas rectas */
+  clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.ojo-de-buey {
+  width: 9px;
+  height: 9px;
+  background: var(--espuma);
+  border: 2px solid var(--negro);
+  margin-top: -6px;
+}
+
+/* Las pilas de cajas se apoyan sobre la cubierta */
+.pila {
+  position: absolute;
+  bottom: 100%; /* apoyadas sobre la cubierta, no dentro del casco */
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  align-items: center;
+}
+
+.pila-izquierda {
+  left: 60px;
+}
+
+.pila-derecha {
+  right: 60px;
+}
+
+.caja {
+  width: 20px;
+  height: 15px;
+  background: var(--caja);
+  border: 2px solid var(--negro);
+  box-shadow: inset 0 -3px 0 var(--caja-som);
+  /* Las dos tablas cruzadas del cajon */
+  background-image: linear-gradient(to bottom, transparent 45%, var(--caja-som) 45% 55%, transparent 55%);
+}
+
+/* -------------------------------------------------------------- la grua */
+
+.grua {
+  position: absolute;
+  bottom: 100%; /* parada sobre la cubierta */
+  width: 36px;
+  height: 74px;
+  left: 10px;
+  transition: left 220ms steps(5, end);
+}
+
+/* Contra la borda de estribor. La pluma se da vuelta para alcanzar la carga. */
+.grua.en-derecha {
+  left: calc(100% - 46px);
+}
+
+.grua-mastil {
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  width: 10px;
+  height: 60px;
+  background: var(--metal);
+  border: 2px solid var(--negro);
+  box-shadow: inset -3px 0 0 var(--metal-som);
+}
+
+.grua-cabina {
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  width: 26px;
+  height: 16px;
+  background: var(--metal-som);
+  border: 2px solid var(--negro);
+}
+
+.grua-pluma {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 32px;
+  height: 8px;
+  background: var(--metal);
+  border: 2px solid var(--negro);
+}
+
+.grua.en-derecha .grua-pluma {
+  left: -2px;
+}
+
+.grua-cable {
+  position: absolute;
+  top: 8px;
+  left: 32px;
+  width: 2px;
+  height: 20px;
+  background: var(--negro);
+}
+
+.grua.en-derecha .grua-cable {
+  left: 2px;
+}
+
+.grua-gancho {
+  position: absolute;
+  top: 26px;
+  left: 28px;
+  width: 10px;
+  height: 6px;
+  background: var(--ambar);
+  border: 2px solid var(--negro);
+}
+
+.grua.en-derecha .grua-gancho {
+  left: -2px;
+}
+
+/* El naufragio: el barco se da vuelta y se hunde un poco */
+.escena.volcada .barco {
+  transform: rotate(calc(var(--marcas, 0) * 19deg)) translateY(26px);
+  transition: transform 700ms steps(9, end);
+}
+
+.escena.volcada .mar {
+  background:
+    repeating-linear-gradient(to bottom, #1a4e86 0 3px, #0d2c53 3px 9px);
+}
+
+/* La victoria: el barco se queda derecho y el cielo se aclara */
+.escena.ganada {
+  background: linear-gradient(to bottom, #3a7ec2 0%, #8fd0ea 62%);
+}
+
+/* ------------------------------------------------------- el barco pirata */
+
+/* --lejania la escribe main.js: cuantos turnos faltan para el abordaje.
+   En 0 el pirata esta pegado al casco; mas lejos se pierde en el horizonte. */
+.pirata {
+  position: absolute;
+  bottom: 2.9rem;
+  left: 8%;
+  width: 46px;
+  height: 40px;
+  transform: translateX(calc(var(--lejania, 0) * -7rem));
+  transition: transform 300ms steps(6, end);
+  z-index: 1;
+}
+
+.pirata.en-derecha {
+  left: auto;
+  right: 8%;
+  transform: translateX(calc(var(--lejania, 0) * 7rem));
+}
+
+.pirata-casco {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 46px;
+  height: 14px;
+  background: #3a2417;
+  border: 2px solid var(--negro);
+  box-shadow: inset 0 -4px 0 #1d120b;
+  clip-path: polygon(0 0, 100% 0, 86% 100%, 14% 100%);
+}
+
+.pirata-mastil {
+  position: absolute;
+  bottom: 12px;
+  left: 21px;
+  width: 4px;
+  height: 26px;
+  background: #6b4a2c;
+  border: 2px solid var(--negro);
+}
+
+.pirata-vela {
+  position: absolute;
+  bottom: 16px;
+  left: 8px;
+  width: 30px;
+  height: 22px;
+  background: #14161c;
+  border: 2px solid var(--negro);
+  /* La calavera: dos puntos y una barra, en crema. */
+  box-shadow:
+    inset 7px 6px 0 0 var(--crema),
+    inset -7px 6px 0 0 var(--crema),
+    inset 0 -6px 0 -4px var(--crema);
+}
+
+.pirata.abordando {
+  animation: sacudir 200ms steps(2, end) 3;
+}
+
+.grito {
+  position: absolute;
+  left: calc(var(--px) * 2);
+  right: calc(var(--px) * 2);
+  top: 30%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--px));
+  align-items: center;
+  text-align: center;
+  color: var(--rojo);
+  text-shadow:
+    -3px 0 var(--negro), 3px 0 var(--negro), 0 -3px var(--negro), 0 3px var(--negro),
+    -3px -3px var(--negro), 3px -3px var(--negro), -3px 3px var(--negro), 3px 3px var(--negro);
+  z-index: 2;
+}
+
+.grito-titulo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  animation: parpadeo 0.4s steps(1, end) 4;
+}
+
+.grito-detalle {
+  max-width: 28rem;
+  padding: calc(var(--px)) calc(var(--px) * 2);
+  background: rgba(7, 11, 18, 0.9);
+  border: 2px solid var(--rojo);
+  color: var(--crema);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-shadow: none;
+}
+
+/* El HUD de los piratas */
+.pip-pirata {
+  width: 9px;
+  height: 10px;
+  background: var(--panel);
+  border: 1px solid var(--negro);
+}
+
+.pip-pirata.llena {
+  background: var(--rojo);
+}
+
+#hud-celda-piratas.inminente .hud-titulo,
+#hud-celda-piratas.inminente .hud-cifra {
+  color: var(--rojo);
+  animation: parpadeo 0.7s steps(1, end) infinite;
+}
+
+/* ====================================================== las dos columnas */
+
+/* Por defecto (celular y tablet) el juego es una sola columna que scrollea. */
+#juego {
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+.fila-medidores {
+  display: grid;
+  gap: calc(var(--px) * 3);
+}
+
+/* =========================================================== los modulos */
+
+.modulo {
+  margin-bottom: calc(var(--px) * 3);
+  background: var(--panel);
+  border: var(--px) solid var(--linea);
+  box-shadow: var(--sombra);
+}
+
+.modulo > *:not(.modulo-titulo) {
+  margin: 0;
+  padding: calc(var(--px) * 3);
+}
+
+/* ------------------------------------------ escala de inclinacion (§3) */
+
+.escala {
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+}
+
+.marca {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: calc(var(--px) * 2) 0 var(--px);
+  background: var(--panel-alto);
+  border: 2px solid var(--negro);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--apagado);
+}
+
+.marca-numero {
+  font-size: 0.88rem;
+  line-height: 1;
+}
+
+.marca-pie {
+  font-size: 0.44rem;
+  letter-spacing: 0.06em;
+  min-height: 0.7rem;
+  line-height: 1;
+}
+
+.marca.vuelca {
+  background: var(--rojo-osc);
+  color: #ffb3b3;
+  border-color: var(--rojo);
+}
+
+.marca.actual {
+  background: var(--ambar);
+  color: var(--negro);
+  border-color: var(--crema);
+  transform: translateY(-3px);
+  box-shadow: 0 3px 0 var(--negro);
+}
+
+.marca.actual.vuelca {
+  background: var(--rojo);
+  color: var(--negro);
+  animation: parpadeo 0.5s steps(1, end) infinite;
+}
+
+.escala-lectura {
+  text-align: center;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--espuma);
+  text-transform: uppercase;
+}
+
+/* Aviso de que el barco esta a una marca del vuelco */
+.aviso-peligro {
+  margin-top: calc(var(--px) * 2) !important;
+  padding: calc(var(--px) * 2) !important;
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--negro);
+  background: var(--rojo);
+  border: 2px solid var(--negro);
+  animation: parpadeo 0.8s steps(1, end) infinite;
+}
+
+.escala.en-peligro .marca.actual {
+  background: var(--rojo);
+  color: var(--negro);
+  border-color: var(--crema);
+}
+
+/* --------------------------------------------------------- dado y viento */
+
+.viento-fila {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--px) * 4);
+}
+
+.dado {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 3px;
+  width: 54px;
+  height: 54px;
+  padding: 6px;
+  background: var(--crema);
+  border: var(--px) solid var(--negro);
+  box-shadow: var(--sombra);
+}
+
+.pip {
+  background: transparent;
+}
+
+/* Las caras del dado son presentacion pura: viven aca, no en el JavaScript.
+   Las celdas se numeran 1..9 de izquierda a derecha y de arriba a abajo. */
+.dado[data-cara="1"] .pip:nth-child(5),
+.dado[data-cara="3"] .pip:nth-child(5),
+.dado[data-cara="5"] .pip:nth-child(5) {
+  background: var(--negro);
+}
+
+.dado[data-cara="2"] .pip:nth-child(1),
+.dado[data-cara="2"] .pip:nth-child(9),
+.dado[data-cara="3"] .pip:nth-child(1),
+.dado[data-cara="3"] .pip:nth-child(9),
+.dado[data-cara="4"] .pip:nth-child(1),
+.dado[data-cara="4"] .pip:nth-child(3),
+.dado[data-cara="4"] .pip:nth-child(7),
+.dado[data-cara="4"] .pip:nth-child(9),
+.dado[data-cara="5"] .pip:nth-child(1),
+.dado[data-cara="5"] .pip:nth-child(3),
+.dado[data-cara="5"] .pip:nth-child(7),
+.dado[data-cara="5"] .pip:nth-child(9),
+.dado[data-cara="6"] .pip:nth-child(1),
+.dado[data-cara="6"] .pip:nth-child(3),
+.dado[data-cara="6"] .pip:nth-child(4),
+.dado[data-cara="6"] .pip:nth-child(6),
+.dado[data-cara="6"] .pip:nth-child(7),
+.dado[data-cara="6"] .pip:nth-child(9) {
+  background: var(--negro);
+}
+
+/* Primer tiempo del turno: todavia no se tiro, el dado esta en blanco */
+.dado.sin-tirar {
+  background: var(--panel-alto);
+  border-style: dashed;
+  border-color: var(--linea);
+  box-shadow: none;
+}
+
+.btn-dado {
+  width: 100%;
+  align-items: center;
+  margin-top: calc(var(--px) * 3);
+  background: var(--ambar);
+  color: var(--negro);
+  border-color: var(--negro);
+}
+
+.btn-dado .btn-sub {
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--negro);
+  opacity: 0.75;
+}
+
+.btn-dado:hover:not(:disabled) {
+  background: var(--crema);
+}
+
+.accion .detalle.en-espera {
+  color: var(--linea);
+  font-style: italic;
+}
+
+/* Cuando el viento empuja de verdad, el dado se marca en rojo */
+.dado.sopla {
+  background: var(--rojo);
+  animation: sacudir 260ms steps(3, end) 2;
+}
+
+.dado.sopla .pip {
+  filter: none;
+}
+
+@keyframes sacudir {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(3px, -3px);
+  }
+}
+
+.viento-texto {
+  font-size: 0.8rem;
+  color: var(--crema);
+}
+
+/* La tabla de efectos del dado */
+.tabla-dado {
+  width: 100%;
+  margin-top: calc(var(--px) * 3);
+  border-collapse: collapse;
+  font-size: 0.66rem;
+}
+
+.tabla-dado tr {
+  border-top: 1px solid var(--linea);
+}
+
+.tabla-dado td {
+  padding: calc(var(--px)) calc(var(--px) * 2) calc(var(--px)) 0;
+  color: var(--apagado);
+  vertical-align: middle;
+}
+
+.tabla-caras {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.cara {
+  display: inline-block;
+  min-width: 1.15rem;
+  margin-right: 2px;
+  padding: 1px 0;
+  text-align: center;
+  font-weight: 700;
+  color: var(--crema);
+  background: var(--panel-alto);
+  border: 1px solid var(--negro);
+}
+
+.tabla-nombre {
+  color: var(--crema);
+  letter-spacing: 0.04em;
+}
+
+.tabla-dado .fila-activa td {
+  color: var(--negro);
+  background: var(--ambar);
+}
+
+.tabla-dado .fila-activa .cara {
+  background: var(--negro);
+  color: var(--ambar);
+  border-color: var(--negro);
+}
+
+.tabla-dado .fila-activa .tabla-nombre {
+  color: var(--negro);
+}
+
+/* ============================================================== acciones */
+
+.acciones {
+  display: grid;
+  gap: calc(var(--px) * 2);
+}
+
+.accion {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  align-items: center;
+  gap: calc(var(--px) * 3);
+  text-align: left;
+  padding: calc(var(--px) * 3);
+  align-content: center;
+}
+
+.accion .glifo {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  height: 2.4rem;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--espuma);
+  background: var(--negro);
+  border: 2px solid var(--linea);
+}
+
+.accion[data-accion="BAJAR_UNA"] .glifo::before {
+  content: "\2193";
+}
+
+.accion[data-accion="DESCARGA_DOBLE"] .glifo::before {
+  content: "\21CA";
+}
+
+.accion[data-accion="CRUZAR"] .glifo::before {
+  content: "\21C4";
+}
+
+.accion .nombre {
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+}
+
+.accion .detalle {
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ambar);
+}
+
+.accion .detalle.motivo {
+  color: #ff9a9a;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  background: var(--panel);
+  color: var(--apagado);
+  border-color: var(--linea);
+  box-shadow: none;
+  transform: none;
+}
+
+.btn:disabled .glifo {
+  color: var(--apagado);
+}
+
+.btn:hover:not(:disabled) .detalle,
+.btn:hover:not(:disabled) .glifo {
+  color: var(--negro);
+}
+
+/* ================================================== consolas de texto */
+
+.modulo-consola {
+  background: var(--negro);
+}
+
+#panel-estado {
+  font-family: var(--fuente);
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: var(--verde);
+  white-space: pre;
+  overflow-x: auto;
+  text-shadow: 0 0 6px rgba(92, 214, 122, 0.45);
+}
+
+.renglon {
+  display: flex;
+}
+
+.valor {
+  color: var(--ambar);
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(255, 209, 102, 0.5);
+}
+
+/* Resalta un instante el valor que acaba de cambiar (requisito de la interfaz) */
+.cambio {
+  animation: destello 900ms steps(6, end);
+}
+
+@keyframes destello {
+  from {
+    background: var(--ambar);
+    color: var(--negro);
+  }
+  to {
+    background: transparent;
+    color: var(--ambar);
+  }
+}
+
+#bitacora {
+  list-style: none;
+  max-height: 13rem;
+  overflow-y: auto;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: #b9cbe4;
+}
+
+#bitacora li {
+  padding: 2px 0;
+  border-bottom: 1px solid #142442;
+}
+
+#bitacora li::before {
+  content: "> ";
+  color: var(--linea);
+}
+
+.bitacora-turno {
+  color: var(--espuma);
+  font-weight: 700;
+}
+
+.bitacora-seccion {
+  color: var(--apagado);
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+/* ========================================================= fin de partida */
+
+.cortina {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--px) * 4);
+  background: rgba(7, 11, 18, 0.86);
+  animation: aparecer 220ms steps(4, end);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cartel {
+  width: min(30rem, 100%);
+  text-align: center;
+  padding: calc(var(--px) * 7) calc(var(--px) * 5);
+  background: var(--panel);
+  border: calc(var(--px) * 2) solid var(--crema);
+  box-shadow:
+    0 0 0 var(--px) var(--negro),
+    calc(var(--px) * 4) calc(var(--px) * 4) 0 var(--negro);
+}
+
+.cartel-resultado {
+  margin: 0 0 calc(var(--px) * 3);
+  font-size: clamp(1.8rem, 10vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-shadow:
+    -3px 0 var(--negro), 3px 0 var(--negro), 0 -3px var(--negro), 0 3px var(--negro),
+    -3px -3px var(--negro), 3px -3px var(--negro), -3px 3px var(--negro), 3px 3px var(--negro);
+}
+
+.cartel.gano .cartel-resultado {
+  color: var(--verde);
+}
+
+.cartel.perdio .cartel-resultado {
+  color: var(--rojo);
+}
+
+.cartel.gano {
+  border-color: var(--verde);
+}
+
+.cartel.perdio {
+  border-color: var(--rojo);
+}
+
+.cartel-titulo {
+  margin: 0 0 calc(var(--px) * 2);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  color: var(--crema);
+}
+
+.cartel-detalle {
+  margin: 0 auto calc(var(--px) * 3);
+  max-width: 26rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #b9cbe4;
+}
+
+.cartel-seccion {
+  margin: 0 0 calc(var(--px) * 5);
+  padding-top: calc(var(--px) * 2);
+  border-top: 1px solid var(--linea);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--apagado);
+}
+
+.cartel-resumen {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px calc(var(--px) * 3);
+  margin: 0 0 calc(var(--px) * 6);
+  padding: calc(var(--px) * 3);
+  background: var(--negro);
+  border: 2px solid var(--linea);
+  font-size: 0.72rem;
+  text-align: left;
+}
+
+.cartel-resumen dt {
+  color: var(--apagado);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cartel-resumen dd {
+  margin: 0;
+  color: var(--ambar);
+  font-weight: 700;
+  text-align: right;
+}
+
+.btn-reiniciar {
+  width: 100%;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: calc(var(--px) * 4);
+}
+
+/* ====================================================== COMPUTADORA: 80/20
+
+   De 64rem para arriba el juego ocupa exactamente el alto de la ventana y se parte
+   en dos columnas: 80 % el juego, 20 % la hoja de estado y la bitacora. No hay
+   scroll de pagina; lo unico que scrollea es la bitacora dentro de su caja.
+   Abajo de 64rem vuelve a una sola columna y ahi si se scrollea la pagina, que es
+   lo razonable en un celular.
+   ------------------------------------------------------------------------- */
+
+@media (min-width: 64rem) {
+  body {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  #gabinete {
+    height: 100%;
+    max-width: none;
+  }
+
+  #juego {
+    max-width: none;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    gap: calc(var(--px) * 3);
+    min-height: 0;
+  }
+
+  .columna-juego,
+  .columna-datos {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--px) * 3);
+    min-height: 0;
+  }
+
+  /* Dentro de las columnas manda el gap, no los margenes de cada modulo. */
+  .columna-juego > *,
+  .columna-datos > *,
+  .fila-medidores > * {
+    margin-bottom: 0;
+  }
+
+  .hud {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* La escena se come todo el espacio que sobra y se encoge si hace falta. */
+  .escena {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 9rem;
+  }
+
+  .fila-medidores {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Las tres acciones en fila, para no gastar alto. */
+  .acciones {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .accion {
+    grid-template-columns: 2rem 1fr;
+  }
+
+  /* La bitacora ocupa lo que quede de la columna derecha y scrollea adentro. */
+  .columna-datos .modulo {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .modulo-bitacora {
+    flex: 1 1 auto;
+  }
+
+  #bitacora {
+    flex: 1 1 auto;
+    max-height: none;
+    min-height: 0;
+  }
+
+  #panel-estado {
+    font-size: 0.72rem;
+  }
+}
+
+/* ================================================================ celular */
+
+@media (max-width: 30rem) {
+  :root {
+    --px: 2px;
+  }
+
+  body {
+    font-size: 13px;
+  }
+
+  .hud {
+    grid-template-columns: 1fr;
+    gap: calc(var(--px) * 3);
+  }
+
+  .hud-celda + .hud-celda {
+    border-left: none;
+    border-top: var(--px) solid var(--panel);
+    padding-top: calc(var(--px) * 3);
+  }
+
+  .escena {
+    height: 12rem;
+  }
+
+  .barco {
+    width: 12rem;
+    margin-left: -6rem;
+  }
+
+  .marca {
+    font-size: 0.6rem;
+  }
+
+  .marca-pie {
+    font-size: 0.38rem;
+  }
+
+  .btn-lado {
+    min-width: 7.5rem;
+  }
+}
+
+/* Respeta a quien pidio menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================================== el manual */
+
+.btn-reglas {
+  align-self: center;
+  padding: calc(var(--px) * 2) calc(var(--px) * 4);
+  background: var(--panel);
+  border-color: var(--linea);
+}
+
+.btn-reglas .btn-texto {
+  font-size: 0.72rem;
+}
+
+.titulo-reglas {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 calc(var(--px) * 6);
+}
+
+/* El titulo de la hoja de estado lleva el boton adentro, para no gastar
+   una fila entera de alto en el diseno de escritorio, que no hace scroll. */
+.modulo-titulo-con-boton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--px) * 2);
+}
+
+.btn-reglas-mini {
+  padding: var(--px) calc(var(--px) * 2);
+  box-shadow: none;
+  letter-spacing: 0.08em;
+}
+
+.btn-reglas-mini .btn-texto {
+  font-size: 0.56rem;
+}
+
+.cortina-manual {
+  z-index: 20; /* por encima del cartel de fin, para poder consultar reglas ahi */
+  align-items: stretch;
+  justify-items: stretch;
+  padding: calc(var(--px) * 3);
+}
+
+.manual {
+  display: flex;
+  flex-direction: column;
+  width: min(50rem, 100%);
+  max-height: 100%;
+  margin: 0 auto;
+  background: var(--noche);
+  border: calc(var(--px) * 2) solid var(--crema);
+  box-shadow:
+    0 0 0 var(--px) var(--negro),
+    calc(var(--px) * 3) calc(var(--px) * 3) 0 var(--negro);
+}
+
+.manual-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--px) * 3);
+  flex: none;
+  padding: calc(var(--px) * 3) calc(var(--px) * 4);
+  background: var(--negro);
+  border-bottom: var(--px) solid var(--linea);
+}
+
+.manual-titulo {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  color: var(--ambar);
+}
+
+.btn-cerrar {
+  padding: calc(var(--px) * 1.5) calc(var(--px) * 3);
+  box-shadow: none;
+}
+
+.btn-cerrar .btn-texto {
+  font-size: 0.64rem;
+}
+
+.manual-indice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--px);
+  flex: none;
+  padding: calc(var(--px) * 2) calc(var(--px) * 4);
+  background: var(--panel);
+  border-bottom: var(--px) solid var(--linea);
+}
+
+.indice-enlace {
+  padding: var(--px) calc(var(--px) * 2);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: var(--espuma);
+  text-decoration: none;
+  border: var(--px) solid transparent;
+}
+
+.indice-enlace:hover,
+.indice-enlace:focus-visible {
+  color: var(--negro);
+  background: var(--ambar);
+  border-color: var(--negro);
+  outline: none;
+}
+
+.manual-cuerpo {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  padding: calc(var(--px) * 4);
+  font-size: 0.76rem;
+  line-height: 1.7;
+  color: var(--crema);
+}
+
+.manual-seccion {
+  scroll-margin-top: calc(var(--px) * 4);
+}
+
+.manual-seccion + .manual-seccion {
+  margin-top: calc(var(--px) * 6);
+  padding-top: calc(var(--px) * 5);
+  border-top: var(--px) dashed var(--linea);
+}
+
+.manual-seccion-titulo {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--px) * 2);
+  margin: 0 0 calc(var(--px) * 3);
+  font-size: 0.92rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ambar);
+}
+
+.manual-marca {
+  padding: 0 calc(var(--px) * 1.5);
+  font-size: 0.68rem;
+  color: var(--negro);
+  background: var(--ambar);
+}
+
+.manual-subtitulo {
+  margin: calc(var(--px) * 5) 0 calc(var(--px) * 2);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--espuma);
+}
+
+.manual-parrafo,
+.manual-cuerpo p {
+  margin: 0 0 calc(var(--px) * 3);
+}
+
+.manual-nota {
+  margin: calc(var(--px) * 3) 0 0;
+  padding: calc(var(--px) * 3);
+  color: var(--ambar);
+  background: var(--panel);
+  border-left: calc(var(--px) * 2) solid var(--ambar);
+}
+
+.manual-pre {
+  margin: 0 0 calc(var(--px) * 3);
+  padding: calc(var(--px) * 3);
+  overflow-x: auto;
+  font-family: var(--fuente);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre;
+  color: var(--verde);
+  background: var(--negro);
+  border: var(--px) solid var(--linea);
+}
+
+.manual-lista {
+  margin: 0 0 calc(var(--px) * 3);
+  padding-left: calc(var(--px) * 5);
+}
+
+.manual-lista li {
+  margin-bottom: calc(var(--px) * 2);
+}
+
+.manual-pasos {
+  margin: 0 0 calc(var(--px) * 3);
+  padding: 0;
+  list-style: none;
+}
+
+.manual-pasos li {
+  display: flex;
+  gap: calc(var(--px) * 3);
+  margin-bottom: calc(var(--px) * 2);
+}
+
+.manual-paso-n {
+  flex: none;
+  width: 2.1rem;
+  padding: 0 calc(var(--px));
+  height: fit-content;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.68rem;
+  color: var(--negro);
+  background: var(--espuma);
+}
+
+/* Las tablas del manual se desplazan solas si no entran, para que la hoja
+   nunca empuje el ancho de la ventana. */
+.manual-tabla-marco {
+  margin: 0 0 calc(var(--px) * 3);
+  overflow-x: auto;
+  border: var(--px) solid var(--linea);
+}
+
+.manual-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+}
+
+.manual-tabla th,
+.manual-tabla td {
+  padding: calc(var(--px) * 2);
+  text-align: left;
+  vertical-align: top;
+  border: var(--px) solid var(--linea);
+}
+
+.manual-tabla th {
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ambar);
+  background: var(--negro);
+  white-space: nowrap;
+}
+
+.manual-tabla td:first-child {
+  color: var(--espuma);
+  white-space: nowrap;
+}
+
+.manual-tabla tbody tr:nth-child(even) {
+  background: rgba(18, 32, 58, 0.6);
+}
+
+@media (max-width: 30rem) {
+  .manual-cuerpo {
+    font-size: 0.72rem;
+    padding: calc(var(--px) * 3);
+  }
+
+  .manual-tabla td:first-child {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manual-cuerpo {
+    scroll-behavior: auto;
+  }
+}

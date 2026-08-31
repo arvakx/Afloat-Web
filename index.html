@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1220" />
+    <title>AFLOAT</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="gabinete">
+      <!-- ================================================= PANTALLA DE TITULO -->
+      <section id="pantalla-titulo" class="pantalla">
+        <div class="titulo-marco">
+          <h1 class="logo">AFLOAT</h1>
+          <p class="logo-sub">MANIOBRA DE PUERTO</p>
+        </div>
+
+        <p class="titulo-texto">
+          Descarga 8 cajas antes de que se acabe el tiempo o el combustible.
+          Cada caja que baja aligera un costado: si el barco se inclina demasiado, se vuelca.
+        </p>
+
+        <p class="titulo-aviso">
+          &#9760; Los piratas rondan el puerto y abordan cada 3 turnos por el costado
+          donde esta trabajando la grua. Lo que se llevan no cuenta como entregado.
+        </p>
+
+        <p class="instruccion parpadea">ELIGE LA POSICIÓN INICIAL DE LA GRÚA</p>
+
+        <div class="botones-lado">
+          <button type="button" class="btn btn-lado" id="lado-izquierda">
+            <span class="btn-flecha">&#9664;</span>
+            <span class="btn-texto">IZQUIERDA</span>
+          </button>
+          <button type="button" class="btn btn-lado" id="lado-derecha">
+            <span class="btn-flecha">&#9654;</span>
+            <span class="btn-texto">DERECHA</span>
+          </button>
+        </div>
+
+        <p class="titulo-reglas">
+          <button type="button" class="btn btn-reglas" id="reglas-titulo">
+            <span class="btn-texto">&#9776; VER LAS REGLAS</span>
+          </button>
+        </p>
+
+        <p class="titulo-nota">
+          Hay la misma carga de los dos lados, de modo que ninguna posición es mejor que
+          la otra. Después no se puede cambiar sin gastar un turno cruzando la grúa.
+        </p>
+      </section>
+
+      <!-- ========================================================== EL JUEGO -->
+      <section id="juego" hidden>
+        <!-- ============================ COLUMNA IZQUIERDA: el juego (80%) -->
+        <div class="columna-juego">
+          <div class="hud">
+            <div class="hud-celda">
+              <span class="hud-titulo">TURNO</span>
+              <div class="pips" id="hud-turnos"></div>
+              <span class="hud-cifra" id="hud-turno-cifra"></span>
+            </div>
+            <div class="hud-celda">
+              <span class="hud-titulo">COMBUSTIBLE</span>
+              <div class="barra" id="hud-combustible"></div>
+              <span class="hud-cifra" id="hud-combustible-cifra"></span>
+            </div>
+            <div class="hud-celda">
+              <span class="hud-titulo">CARGA ENTREGADA</span>
+              <div class="ranuras" id="hud-carga"></div>
+              <span class="hud-cifra" id="hud-carga-cifra"></span>
+              <span class="hud-margen" id="hud-carga-margen"></span>
+            </div>
+            <div class="hud-celda" id="hud-celda-piratas">
+              <span class="hud-titulo">PIRATAS</span>
+              <div class="pips" id="hud-piratas"></div>
+              <span class="hud-cifra" id="hud-piratas-cifra"></span>
+            </div>
+          </div>
+
+          <div class="escena">
+            <div class="sol"></div>
+            <div class="nube nube-a"></div>
+            <div class="nube nube-b"></div>
+
+            <div class="pirata" id="pirata">
+              <div class="pirata-vela"></div>
+              <div class="pirata-mastil"></div>
+              <div class="pirata-casco"></div>
+            </div>
+
+            <div class="barco" id="barco">
+              <div class="pila pila-izquierda" id="pila-izquierda"></div>
+              <div class="pila pila-derecha" id="pila-derecha"></div>
+              <div class="cubierta"></div>
+              <div class="casco">
+                <span class="ojo-de-buey"></span>
+                <span class="ojo-de-buey"></span>
+                <span class="ojo-de-buey"></span>
+              </div>
+              <div class="grua" id="grua">
+                <div class="grua-pluma"></div>
+                <div class="grua-mastil"></div>
+                <div class="grua-cabina"></div>
+                <div class="grua-cable"></div>
+                <div class="grua-gancho"></div>
+              </div>
+            </div>
+
+            <div class="mar"></div>
+            <p class="grito" id="grito" hidden>&#9760; ¡ABORDAJE!</p>
+          </div>
+
+          <div class="fila-medidores">
+            <div class="modulo">
+              <h2 class="modulo-titulo">INCLINACIÓN DEL BARCO</h2>
+              <div class="escala" id="aguja"></div>
+              <p class="escala-lectura" id="aguja-lectura"></p>
+              <p class="aviso-peligro" id="aviso-peligro" hidden></p>
+            </div>
+
+            <div class="modulo">
+              <h2 class="modulo-titulo">VIENTO</h2>
+              <div class="viento-fila">
+                <div class="dado" id="dado">
+                  <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                  <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                  <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                </div>
+                <p class="viento-texto" id="dado-texto"></p>
+              </div>
+              <button type="button" class="btn btn-dado" id="boton-dado">
+                <span class="btn-texto">TIRAR EL DADO</span>
+                <span class="btn-sub" id="boton-dado-sub"></span>
+              </button>
+              <table class="tabla-dado">
+                <tbody id="cuerpo-tabla-dado"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="modulo">
+            <h2 class="modulo-titulo">ACCIÓN DEL TURNO</h2>
+            <div class="acciones" id="acciones"></div>
+          </div>
+        </div>
+
+        <!-- ====================== COLUMNA DERECHA: la auditoría (20%) -->
+        <div class="columna-datos">
+          <div class="modulo modulo-consola">
+            <h2 class="modulo-titulo modulo-titulo-con-boton">
+              HOJA DE ESTADO
+              <button type="button" class="btn btn-reglas btn-reglas-mini" id="reglas-juego">
+                <span class="btn-texto">&#9776; REGLAS</span>
+              </button>
+            </h2>
+            <pre id="panel-estado"></pre>
+          </div>
+
+          <div class="modulo modulo-consola modulo-bitacora">
+            <h2 class="modulo-titulo">BITÁCORA DE LA PARTIDA</h2>
+            <ol id="bitacora"></ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== FIN DE PARTIDA -->
+      <div class="cortina" id="cortina-fin" hidden>
+        <div class="cartel" id="cartel-fin">
+          <p class="cartel-resultado" id="fin-resultado"></p>
+          <p class="cartel-titulo" id="fin-titulo"></p>
+          <p class="cartel-detalle" id="fin-detalle"></p>
+          <p class="cartel-seccion" id="fin-seccion"></p>
+          <dl class="cartel-resumen" id="fin-resumen"></dl>
+          <button type="button" class="btn btn-reiniciar" id="reiniciar">JUGAR OTRA VEZ</button>
+        </div>
+      </div>
+
+      <!-- ====================================================== EL MANUAL -->
+      <div class="cortina cortina-manual" id="cortina-manual" hidden>
+        <div class="manual" role="dialog" aria-modal="true" aria-labelledby="manual-titulo">
+          <div class="manual-barra">
+            <h2 class="manual-titulo" id="manual-titulo">MANUAL DE AFLOAT</h2>
+            <button type="button" class="btn btn-cerrar" id="cerrar-reglas">
+              <span class="btn-texto">CERRAR &#10005;</span>
+            </button>
+          </div>
+          <nav class="manual-indice" id="manual-indice"></nav>
+          <div class="manual-cuerpo" id="manual-cuerpo"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
