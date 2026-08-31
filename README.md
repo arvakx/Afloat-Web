@@ -14,6 +14,15 @@ npm test         # corre los ocho casos del manual
 No hace falta ningún paso extra: no hay backend, ni base de datos, ni variables de
 entorno. El estado vive en memoria y se pierde al recargar la página.
 
+## Despliegue en GitHub Pages
+
+El workflow `.github/workflows/deploy-pages.yml` ejecuta los tests, construye el sitio
+con Vite y publica `dist` cuando se hace push a `main`. En GitHub, configura una sola
+vez **Settings → Pages → Build and deployment → Source → GitHub Actions**.
+
+El `base` de Vite es `/Afloat-Web/`, que corresponde a la URL del repositorio:
+`https://arvakx.github.io/Afloat-Web/`.
+
 ## Dependencias
 
 Una sola, y de desarrollo: `vite`. Cero dependencias de producción.
