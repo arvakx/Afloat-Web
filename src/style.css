@@ -256,6 +256,33 @@ h2 {
   min-width: 9rem;
 }
 
+.btn-musica-titulo[aria-pressed='false'],
+.hud-musica[aria-pressed='false'] {
+  color: var(--apagado);
+}
+
+.hud-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--px) * 2);
+}
+
+.hud-musica {
+  display: inline-flex;
+  min-width: 1.8rem;
+  padding: 0 calc(var(--px) * 1.5);
+  background: var(--negro);
+  border-width: 2px;
+  border-color: var(--linea);
+  box-shadow: none;
+}
+
+.hud-musica .btn-texto {
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
 .btn-flecha {
   font-size: 1.3rem;
   line-height: 1;
@@ -1433,6 +1460,7 @@ h2 {
 
 .titulo-reglas {
   display: flex;
+  gap: calc(var(--px) * 3);
   justify-content: center;
   margin: 0 0 calc(var(--px) * 6);
 }

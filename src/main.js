@@ -30,6 +30,13 @@ import {
   tirarDado,
   turnosParaElAbordaje,
 } from './engine.js'
+import {
+  alternarMusica,
+  iniciarMusica,
+  musicaEstaActiva,
+  pausarMusica,
+  reanudarMusica,
+} from './music.js'
 
 // ---------------------------------------------------------------------------
 // Estado de la pantalla
@@ -73,6 +80,7 @@ const COSTO_MAS_BARATO = Math.min(...Object.values(ACCIONES).map((a) => a.costo)
 // ---------------------------------------------------------------------------
 
 function comenzarPartida(ladoGrua) {
+  iniciarMusica()
   estado = estadoInicial(ladoGrua)
   fin = null
   dado = null
@@ -562,6 +570,22 @@ function cerrarManual() {
   }
 }
 
+function dibujarControlDeMusica() {
+  const estaActiva = musicaEstaActiva()
+  for (const boton of document.querySelectorAll('[data-control-musica]')) {
+    const descripcion = estaActiva ? 'Silenciar música' : 'Activar música'
+    boton.setAttribute('aria-pressed', String(estaActiva))
+    boton.setAttribute('aria-label', descripcion)
+    boton.title = descripcion
+
+    const texto = boton.querySelector('[data-musica-texto]')
+    const formatoCorto = boton.dataset.musicaFormato === 'corto'
+    texto.textContent = formatoCorto
+      ? estaActiva ? '♫' : '♩'
+      : estaActiva ? '♫ MÚSICA SÍ' : '♩ MÚSICA NO'
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Eventos
 // ---------------------------------------------------------------------------
@@ -577,6 +601,12 @@ $('reiniciar').addEventListener('click', volverAEmpezar)
 $('reglas-titulo').addEventListener('click', abrirManual)
 $('reglas-juego').addEventListener('click', abrirManual)
 $('cerrar-reglas').addEventListener('click', cerrarManual)
+for (const boton of document.querySelectorAll('[data-control-musica]')) {
+  boton.addEventListener('click', () => {
+    alternarMusica()
+    dibujarControlDeMusica()
+  })
+}
 
 // Cerrar tocando fuera de la hoja, que es lo que espera cualquiera.
 $('cortina-manual').addEventListener('click', (evento) => {
@@ -591,4 +621,13 @@ document.addEventListener('keydown', (evento) => {
   }
 })
 
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    pausarMusica()
+  } else {
+    reanudarMusica()
+  }
+})
+
 dibujarManual()
+dibujarControlDeMusica()

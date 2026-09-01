@@ -43,6 +43,14 @@
           <button type="button" class="btn btn-reglas" id="reglas-titulo">
             <span class="btn-texto">&#9776; VER LAS REGLAS</span>
           </button>
+          <button
+            type="button"
+            class="btn btn-reglas btn-musica-titulo"
+            data-control-musica
+            aria-pressed="true"
+          >
+            <span class="btn-texto" data-musica-texto>♫ MÚSICA SÍ</span>
+          </button>
         </p>
 
         <p class="titulo-nota">
@@ -73,7 +81,18 @@
               <span class="hud-margen" id="hud-carga-margen"></span>
             </div>
             <div class="hud-celda" id="hud-celda-piratas">
-              <span class="hud-titulo">PIRATAS</span>
+              <div class="hud-cabecera">
+                <span class="hud-titulo">PIRATAS</span>
+                <button
+                  type="button"
+                  class="btn hud-musica"
+                  data-control-musica
+                  data-musica-formato="corto"
+                  aria-pressed="true"
+                >
+                  <span class="btn-texto" data-musica-texto>♫</span>
+                </button>
+              </div>
               <div class="pips" id="hud-piratas"></div>
               <span class="hud-cifra" id="hud-piratas-cifra"></span>
             </div>
