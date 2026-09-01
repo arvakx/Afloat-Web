@@ -11,7 +11,7 @@
 
 // §3 — valores iniciales de las siete variables
 export const TURNO_FINAL = 12
-export const COMBUSTIBLE_INICIAL = 24
+export const COMBUSTIBLE_INICIAL = 25
 export const CAJAS_POR_LADO = 5
 export const META_CAJAS = 8
 
